@@ -5,25 +5,32 @@ const events = require("../../events");
 // events.on('pickup', transitPackage);
 
 function transitPackage(payload){
-    
-    setInterval(() => {
+    let Event={
+        event:'pickup',
+        time:new Date(),
+        payload:payload,
+    };
+    console.log('Event', Event);
+
+    console.log(`DRIVER: picked up ${payload.orderID}`);
+    setTimeout(() => {
     // console.log(`DRIVER: picked up ${payload.orderID}ggggggg`);
     // let orderId=
     // events.emit('pickup',payload)
-    // events.emit('in-transit',payload);
+    events.emit('in-transit',payload);
     // events.emit('delivered',payload)
 
     
-    // console.log('--------transit-----------------');
+    console.log('--------transit-----------------');
    
 }, 1000);
 
-setInterval(() => {
+setTimeout(() => {
     
-    // console.log('delivered');
-    // events.emit('delivered',payload)
+    console.log('delivered');
+    events.emit('delivered',payload)
     
-    // console.log('---------------deliveredd----------');
+    console.log('---------------deliveredd----------');
    
 }, 3000);
 }

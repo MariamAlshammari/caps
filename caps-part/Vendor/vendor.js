@@ -4,7 +4,20 @@ var faker = require('faker');
 
 const STORE_NAME=process.env.STORE_NAME || 'Mariam-Grill-Resturant';
 
- 
+
+
+events.on('delivered',(payload)=>{
+    console.log(`DRIVER: delivered up ${payload.orderID}`);
+    console.log(`VENDOR: Thank you for delivering  ${payload.orderID} 🥰 `);
+    let Event={
+        event:'delivered',
+        time:new Date(),
+        payload:payload,
+    };
+    console.log('Event', Event);
+})
+
+
 
 setInterval(() => {
     console.log('orderrr');
@@ -30,9 +43,7 @@ setInterval(() => {
     }, 5000);
     
     
-    events.on('delivered',(payload)=>{
-        console.log(`VENDOR: Thank you for delivering  ${payload.orderID} 🥰 `);
-    })
+
     
     
     
