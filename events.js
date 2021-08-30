@@ -1,7 +1,13 @@
-'use strict';
+// 'use strict';
+// const io=require('socket.io-client');
+// const connectionToCaps=io.connect('http://localhost:3000');
+// const connectionToCapsNameSpace=io.connect('http://localhost:3000/caps');
 
-const Events = require('events');
 
-const events=new Events();
 
-module.exports =events;
+// connectionToCaps.emit('pickup',{payload:'pickup'});
+// connectionToCapsNameSpace.emit('pickup',{payload:'pickup'});
+
+// connectionToCapsNameSpace.emit('pickup',{payload:'in-transit'});
+
+// connectionToCapsNameSpace.emit('in-transit',{payload:'delivered'});

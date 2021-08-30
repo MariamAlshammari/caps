@@ -1,8 +1,8 @@
 'use strict';
 
-const events = require("../../events");
-
-// events.on('pickup', transitPackage);
+const io = require('socket.io-client');
+const host = 'http://localhost:3000';
+const connectionToCapsNameSpace=io.connect(`${host}/caps`);
 
 function transitPackage(payload){
     let Event={
@@ -10,27 +10,38 @@ function transitPackage(payload){
         time:new Date(),
         payload:payload,
     };
-    console.log('Event', Event);
-
-    console.log(`DRIVER: picked up ${payload.orderID}`);
-    setTimeout(() => {
-    // console.log(`DRIVER: picked up ${payload.orderID}ggggggg`);
-    // let orderId=
-    // events.emit('pickup',payload)
-    events.emit('in-transit',payload);
-    // events.emit('delivered',payload)
+    // console.log('Event', Event);
 
     
-    console.log('--------transit-----------------');
+    setTimeout(() => {
+        console.log(`DRIVER: picked up ${payload.orderID}`);
+    
+    connectionToCapsNameSpace.emit('in-transit',payload);
+    let Event={
+        event:'in-transit',
+        time:new Date(),
+        payload:payload,
+    };
+    // console.log('Event', Event);
+
+    
+    // console.log('--------transit-----------------');
    
-}, 1000);
+}, 1500);
 
 setTimeout(() => {
     
     console.log('delivered');
-    events.emit('delivered',payload)
-    
-    console.log('---------------deliveredd----------');
+    console.log(`DRIVER: delivered up ${payload.orderID}`);
+    // console.log(`VENDOR: Thank you for delivering  ${payload.orderID} 🥰 `);
+    connectionToCapsNameSpace.emit('delivered',payload)
+        let Event={
+            event:'delivered',
+            time:new Date(),
+            payload:payload,
+        };
+        // console.log('Event', Event);
+    // console.log('---------------deliveredd----------');
    
 }, 3000);
 }
