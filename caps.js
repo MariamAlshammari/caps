@@ -1,54 +1,63 @@
 'use strict';
 
-const events=require('./events');
+const port=3000;
+// http://localhost:3000
+const io=require('socket.io')(port);
+// http://localhost:3000/caps
 
-require('./caps-part/Drivers/driver'),
+const caps=io.of('/caps');
+
 require('./caps-part/Vendor/vendor');
+require('./caps-part/Drivers/driver');
+
+io.on('connection',(socket)=>{
+    console.log('connected to caps');
+
+})
 
 
-events.on('pickup',(payload)=>{
-    // let Event={
-    //     event:'pickup',
-    //     time:new Date(),
-    //     payload:payload,
-    // };
-    // console.log('Event', Event);
 
-    // console.log(`DRIVER: picked up ${payload.orderID}`);
-    // events.emit('pickup',payload);
-    events.on('in-transit',(payload)=>{
+caps.on('connection',(socket)=>{
+    // console.log('connected to caps namespace');
+
+    socket.on('pickup',(payload)=>{
         let Event={
-            event:'in-transit',
+            event:'pickup',
             time:new Date(),
             payload:payload,
         };
         console.log('Event', Event);
+            caps.emit('pickup', payload);
     })
-    // events.emit('in-transit',payload);
 
-    // console.log('delivered');
-    // console.log(`DRIVER: delivered up ${payload.orderID}`);
-    // events.emit('delivered',payload);
+        socket.on('in-transit',(payload)=>{
+            let Event={
+                event:'in-transit',
+                time:new Date(),
+                payload:payload,
+            };
+            console.log('Event', Event);
+            caps.emit('in-transit', payload);
+        })
 
-});
+        socket.on('delivered',(payload)=>{
+            
+        let Event={
+            event:'delivered',
+            time:new Date(),
+            payload:payload,
+        };
+        console.log('Event', Event);
+        caps.emit('delivered', payload);
+       
 
-// events.on('in-transit',(payload)=>{
-//     let Event={
-//         event:'in-transit',
-//         time:new Date(),
-//         payload:payload,
-//     };
-//     console.log('Event', Event);
-// })
+    
+    });
 
-// events.on('delivered',(payload)=>{
-//     // let Event={
-//     //     event:'delivered',
-//     //     time:new Date(),
-//     //     payload:payload,
-//     // };
-//     // console.log('Event', Event);
-// })
+})
+module.exports=caps;
+
+
 
 
 

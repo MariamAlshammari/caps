@@ -1,5 +1,11 @@
 'use strict';
-const events = require('../events')
+// const events = require('../events')
+const caps=require('../caps');
+const supertest = require("supertest");
+const io=require('socket.io-client');
+const HOST=process.env.HOST || 'http://localhost:3000';
+const socket=io.connect(`${HOST}/caps`);
+
 
 let order={
     store:'Mariam-Grill-Resturant',
@@ -15,28 +21,34 @@ describe('testing events pool', () => {
     beforeAll(() => {
         consoleSpy = jest.spyOn(console, 'log').mockImplementation();
     });
+    it('connection',async()=>{
+        caps.emit('connection', order);
+        await consoleSpy();
+        expect(await consoleSpy).toHaveBeenCalled();
+       
+    });
       
-    it('pickUp event ', async () => {
-        events.emit('pickup', order);
+    it('pickUp  ', async () => {
+        caps.emit('pickup', order);
         await consoleSpy();
-        expect(consoleSpy).toHaveBeenCalled();
+        expect(await consoleSpy).toHaveBeenCalled();
     });
 
-    it('in-transit event  ', async () => {
-        events.emit('in-transit', order);
+    it('in-transit   ', async () => {
+        caps.emit('in-transit', order);
         await consoleSpy();
-        expect(consoleSpy).toHaveBeenCalled();
+        expect(await consoleSpy).toHaveBeenCalled();
     });
 
-    it('delivered event   ', async () => {
-        events.emit('delivered', order);
+    it('delivered    ', async () => {
+        caps.emit('delivered', order);
         await consoleSpy();
-        expect(consoleSpy).toHaveBeenCalled();
+        expect(await consoleSpy).toHaveBeenCalled();
     });
 
 
     afterAll(() => {
-        consoleSpy.mockRestore();
+         consoleSpy.mockRestore();
     });
 
 });
