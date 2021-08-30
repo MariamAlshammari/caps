@@ -9,26 +9,26 @@ let order={
 };
 
 
-describe('testing event handlers', () => {
+describe('testing events pool', () => {
     let consoleSpy;
 
     beforeAll(() => {
         consoleSpy = jest.spyOn(console, 'log').mockImplementation();
     });
       
-    it('pickup event Work', async () => {
+    it('pickUp event ', async () => {
         events.emit('pickup', order);
         await consoleSpy();
         expect(consoleSpy).toHaveBeenCalled();
     });
 
-    it('in-transit event Work ', async () => {
+    it('in-transit event  ', async () => {
         events.emit('in-transit', order);
         await consoleSpy();
         expect(consoleSpy).toHaveBeenCalled();
     });
 
-    it('delivered event Work  ', async () => {
+    it('delivered event   ', async () => {
         events.emit('delivered', order);
         await consoleSpy();
         expect(consoleSpy).toHaveBeenCalled();
